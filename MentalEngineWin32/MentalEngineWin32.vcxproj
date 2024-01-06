@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -155,11 +155,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\App.cpp" />
+    <ClCompile Include="src\Graphics\Initialization.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Exceptions\ComException.cpp" />
+    <ClCompile Include="src\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\Core.h" />
+    <ClInclude Include="src\Graphics\App.h" />
+    <ClInclude Include="src\Graphics\Graphics.h" />
+    <ClInclude Include="src\Graphics\Initialization.h" />
+    <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Utils\d3dx12.h" />
+    <ClInclude Include="src\Exceptions\ComException.h" />
+    <ClInclude Include="src\Utils\Helpers.h" />
+    <ClInclude Include="src\Utils\Macros.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,9 +3,9 @@
 #include <windows.h>
 #include <DirectXMath.h>
 
-namespace Graphics
+namespace Math
 {
-	bool CheckDirectXMathSupport()
+	inline bool VerifySupport()
 	{
 		return DirectX::XMVerifyCPUSupport();
 	}
