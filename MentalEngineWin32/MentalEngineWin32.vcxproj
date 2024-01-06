@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Exceptions\GraphicsException.cpp" />
     <ClCompile Include="src\Graphics\App.cpp" />
     <ClCompile Include="src\Graphics\Initialization.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -162,6 +163,8 @@
     <ClCompile Include="src\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Exceptions\BaseException.h" />
+    <ClInclude Include="src\Exceptions\GraphicsException.h" />
     <ClInclude Include="src\Graphics\App.h" />
     <ClInclude Include="src\Graphics\Graphics.h" />
     <ClInclude Include="src\Graphics\Initialization.h" />

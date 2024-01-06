@@ -1,7 +1,10 @@
 #include "App.h"
 
 #include <cassert>
+#include <format>
+
 #include "Initialization.h"
+#include "../Exceptions/GraphicsException.h"
 
 Graphics::App::App(HINSTANCE hInstance) : mHAppInst(hInstance)
 {
@@ -36,13 +39,13 @@ int Graphics::App::Run()
 
 void Graphics::App::InitializeGraphics()
 {
-	EnableDebugLayer();
-	CreateFactory(mDXGIFactory);
-	CreateDevice(mDXGIFactory, Graphics::GRAPHICS_FEATURE_LEVEL, mDevice);
-	CreateFence(mDevice, mFence);
-	GetDescriptorSizes(mDevice, &mRtvDescriptorSize, &mDsvDescriptorSize, &mCbvSrvUavDescriptorSize);
+	Graphics::EnableDebugLayer();
+	Graphics::CreateFactory(mDXGIFactory);
+	Graphics::CreateDevice(mDXGIFactory, Graphics::GRAPHICS_FEATURE_LEVEL, mDevice);
+	Graphics::CreateFence(mDevice, mFence);
+	Graphics::GetDescriptorSizes(mDevice, &mRtvDescriptorSize, &mDsvDescriptorSize, &mCbvSrvUavDescriptorSize);
 
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevel{ mBackBufferFormat, mMSAASampleCount, D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE, 0 };
-	CheckMSAASupport(mDevice, &msQualityLevel);
+	if (!Graphics::CheckMSAASupport(mDevice, &msQualityLevel)) throw GraphicsException(std::format("MSAA {}x is not supported on this platform", mMSAASampleCount));
 	mMSAAQuality = msQualityLevel.NumQualityLevels - 1;
 }

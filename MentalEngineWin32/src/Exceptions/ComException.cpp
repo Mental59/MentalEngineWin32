@@ -17,4 +17,3 @@ std::wstring ComException::ToString() const
 		std::to_wstring(LineNumber),
 		errorMessage);
 }
-

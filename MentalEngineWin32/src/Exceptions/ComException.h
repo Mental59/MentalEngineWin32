@@ -1,19 +1,19 @@
 #pragma once
 
 #include <windows.h>
-#include <string>
+#include "BaseException.h"
 
-class ComException
+class ComException : public BaseException
 {
 public:
-	HRESULT ErrorCode;
-	std::string FunctionName;
-	std::string Filename;
-	int LineNumber;
-
 	ComException(HRESULT hr, const char* functionName, const char* filename, int linenumber) :
 		ErrorCode(hr), FunctionName(functionName), Filename(filename), LineNumber(linenumber)
 	{}
 
-	std::wstring ToString() const;
+	virtual std::wstring ToString() const override;
+
+	HRESULT ErrorCode;
+	std::string FunctionName;
+	std::string Filename;
+	int LineNumber;
 };

@@ -56,10 +56,10 @@ void Graphics::GetDescriptorSizes(
 	*cbvSrvUavDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-void Graphics::CheckMSAASupport(
+bool Graphics::CheckMSAASupport(
 	Microsoft::WRL::ComPtr<ID3D12Device>& device,
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels)
 {
 	ThrowIfFailed(device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, msQualityLevels, sizeof(*msQualityLevels)));
-	assert(msQualityLevels->NumQualityLevels > 0);
+	return msQualityLevels->NumQualityLevels > 0;
 }

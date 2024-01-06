@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "Graphics/App.h"
-#include "Exceptions/ComException.h"
+#include "Exceptions/BaseException.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -23,9 +23,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		return app.Run();
 	}
-	catch (ComException& e)
+	catch (BaseException& e)
 	{
-		MessageBox(nullptr, e.ToString().c_str(), L"COM Exception", MB_OK);
+		MessageBox(nullptr, e.ToString().c_str(), L"Exception", MB_OK);
 		return 0;
 	}
 }

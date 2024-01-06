@@ -27,7 +27,7 @@ namespace Graphics
 		UINT* cbvSrvDescriptorSize
 	);
 
-	void CheckMSAASupport(
+	bool CheckMSAASupport(
 		Microsoft::WRL::ComPtr<ID3D12Device>& device,
 		D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels);
 }
