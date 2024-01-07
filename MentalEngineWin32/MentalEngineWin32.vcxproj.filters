@@ -18,10 +18,10 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\App.cpp">
+    <ClCompile Include="src\Graphics\DirectX\DXAppComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Initialization.cpp">
+    <ClCompile Include="src\Graphics\DirectX\DXObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\ComException.cpp">
@@ -33,15 +33,21 @@
     <ClCompile Include="src\Exceptions\GraphicsException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\App\Win32App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\App.h">
+    <ClInclude Include="src\Graphics\DirectX\DXAppComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\d3dx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Initialization.h">
+    <ClInclude Include="src\Graphics\DirectX\DXObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math\Math.h">
@@ -56,13 +62,16 @@
     <ClInclude Include="src\Utils\Helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Exceptions\BaseException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\GraphicsException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\Win32App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
-#include <Windows.h>
-#include "Graphics/App.h"
+#include <windows.h>
+#include "Graphics/DirectX/DXAppComponent.h"
+#include "App/Win32App.h"
 #include "Exceptions/BaseException.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -14,14 +15,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	try
 	{
-		Graphics::App app(hInstance);
-
-		if (!app.Initialize())
-		{
-			return 0;
-		}
-
-		return app.Run();
+		Graphics::DXAppComponent dxComponent(800, 600, 200, 200, L"D3D12 App");
+		return App::Win32App::Run(&dxComponent, hInstance, nCmdShow);
 	}
 	catch (BaseException& e)
 	{

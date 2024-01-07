@@ -1,6 +1,6 @@
 #include "GraphicsException.h"
 
-#include "../Utils/Helpers.h"
+#include "Utils/Helpers.h"
 
 std::wstring GraphicsException::ToString() const
 {

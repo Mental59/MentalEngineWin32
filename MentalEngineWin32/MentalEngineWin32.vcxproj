@@ -94,11 +94,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3dcompiler.lib;D3D12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -111,6 +114,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,11 +133,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3dcompiler.lib;D3D12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,6 +153,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,19 +165,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\App\Win32App.cpp" />
     <ClCompile Include="src\Exceptions\GraphicsException.cpp" />
-    <ClCompile Include="src\Graphics\App.cpp" />
-    <ClCompile Include="src\Graphics\Initialization.cpp" />
+    <ClCompile Include="src\Game\Timer.cpp" />
+    <ClCompile Include="src\Graphics\DirectX\DXAppComponent.cpp" />
+    <ClCompile Include="src\Graphics\DirectX\DXObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Exceptions\ComException.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\App\Win32App.h" />
     <ClInclude Include="src\Exceptions\BaseException.h" />
     <ClInclude Include="src\Exceptions\GraphicsException.h" />
-    <ClInclude Include="src\Graphics\App.h" />
-    <ClInclude Include="src\Graphics\Graphics.h" />
-    <ClInclude Include="src\Graphics\Initialization.h" />
+    <ClInclude Include="src\Game\Timer.h" />
+    <ClInclude Include="src\Graphics\DirectX\DXAppComponent.h" />
+    <ClInclude Include="src\Graphics\DirectX\DXObject.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Utils\d3dx12.h" />
     <ClInclude Include="src\Exceptions\ComException.h" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Exceptions/ComException.h"
+#include "Exceptions/ComException.h"
 
 #ifndef ThrowIfFailed
 #define ThrowIfFailed(x) \
