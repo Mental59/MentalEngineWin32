@@ -36,11 +36,11 @@ namespace Graphics
 		UINT mHeight;
 		D3D_FEATURE_LEVEL mFeatureLevel;
 
-		Microsoft::WRL::ComPtr<IDXGIFactory4> mDXGIFactory;
+		Microsoft::WRL::ComPtr<IDXGIFactory7> mDXGIFactory;
 		Microsoft::WRL::ComPtr<ID3D12Device> mDevice;
 		Microsoft::WRL::ComPtr<ID3D12Fence> mFence;
 
-		Microsoft::WRL::ComPtr<IDXGISwapChain3> mSwapChain;
+		Microsoft::WRL::ComPtr<IDXGISwapChain4> mSwapChain;
 
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue> mCommandQueue;
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> mCommandList;
