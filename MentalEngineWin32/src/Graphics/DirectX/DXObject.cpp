@@ -20,6 +20,16 @@ void Graphics::DXObject::OnDestroy()
 	CloseHandle(mFenceEvent);
 }
 
+D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXObject::GetCurrentBackBufferView() const
+{
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mBackBufferIndex, mRtvDescriptorSize);
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXObject::GetCurrentDepthStencilView() const
+{
+	return mDSVHeap->GetCPUDescriptorHandleForHeapStart();
+}
+
 void Graphics::DXObject::EnableDebugLayer()
 {
 #if defined(_DEBUG)
@@ -101,7 +111,6 @@ void Graphics::DXObject::CreateCommandObjects(bool closeCommandList)
 void Graphics::DXObject::CreateSwapChain(
 	UINT msaaSampleCount,
 	UINT msaaQuality,
-	UINT swapChainBufferCount,
 	HWND outputWindow)
 {
 	mSwapChain.Reset();
@@ -115,7 +124,7 @@ void Graphics::DXObject::CreateSwapChain(
 	swapChainDesc.SampleDesc.Count = msaaSampleCount;
 	swapChainDesc.SampleDesc.Quality = msaaQuality;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferCount = swapChainBufferCount;
+	swapChainDesc.BufferCount = mSwapChainBufferCount;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
@@ -131,10 +140,12 @@ void Graphics::DXObject::CreateSwapChain(
 	ThrowIfFailed(mDXGIFactory->MakeWindowAssociation(outputWindow, DXGI_MWA_NO_ALT_ENTER));
 
 	ThrowIfFailed(swapChain.As(&mSwapChain));
+	UpdateBackBufferIndex();
 }
 
 void Graphics::DXObject::FlushCommandQueue()
 {
+	// Wait for GPU to finish executing all commands
 	const UINT64 fence = mFenceValue;
 	ThrowIfFailed(mCommandQueue->Signal(mFence.Get(), fence));
 	mFenceValue++;
@@ -144,4 +155,81 @@ void Graphics::DXObject::FlushCommandQueue()
 		ThrowIfFailed(mFence->SetEventOnCompletion(fence, mFenceEvent));
 		WaitForSingleObject(mFenceEvent, INFINITE);
 	}
+}
+
+void Graphics::DXObject::UpdateBackBufferIndex()
+{
+	mBackBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
+}
+
+void Graphics::DXObject::CreateDescriptorHeaps()
+{
+	// Describe and create a render target view (RTV) descriptor heap
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	rtvHeapDesc.NumDescriptors = mSwapChainBufferCount;
+	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	ThrowIfFailed(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));
+
+	// Describe and create a depth stencil view (DSV) descriptor heap
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.NumDescriptors = 1;
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	ThrowIfFailed(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
+}
+
+void Graphics::DXObject::CreateRenderTargetViews()
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
+
+	// Create a RTV for each back buffer
+	for (UINT i = 0; i < mSwapChainBufferCount; i++)
+	{
+		ThrowIfFailed(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));
+		mDevice->CreateRenderTargetView(mRenderTargets[i].Get(), nullptr, rtvHandle);
+		rtvHandle.Offset(1, mRtvDescriptorSize);
+	}
+}
+
+void Graphics::DXObject::CreateDepthStencilBufferAndView(
+	UINT msaaSampleCount,
+	UINT msaaQuality,
+	D3D12_RESOURCE_STATES initialState
+)
+{
+	D3D12_RESOURCE_DESC depthStencilDesc;
+	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	depthStencilDesc.Alignment = 0;
+	depthStencilDesc.Width = mWidth;
+	depthStencilDesc.Height = mHeight;
+	depthStencilDesc.DepthOrArraySize = 1;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.Format = mDepthStencilFormat;
+	depthStencilDesc.SampleDesc.Count = msaaSampleCount;
+	depthStencilDesc.SampleDesc.Quality = msaaQuality;
+	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+
+	D3D12_CLEAR_VALUE clearValue;
+	clearValue.Format = mDepthStencilFormat;
+	clearValue.DepthStencil.Depth = 1.0f;
+	clearValue.DepthStencil.Stencil = 0;
+
+	CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
+	ThrowIfFailed(mDevice->CreateCommittedResource(
+		&heapProperties,
+		D3D12_HEAP_FLAG_NONE,
+		&depthStencilDesc,
+		initialState,
+		&clearValue,
+		IID_PPV_ARGS(&mDepthStencilBuffer)
+	));
+
+	// Create a depth stencil view (DSV).
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = mDepthStencilFormat;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Texture2D.MipSlice = 0;
+	mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), &dsvDesc, GetCurrentDepthStencilView());
 }

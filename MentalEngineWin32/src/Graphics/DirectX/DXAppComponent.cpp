@@ -75,5 +75,8 @@ void Graphics::DXAppComponent::LoadPipeline()
 	mMSAAQuality = msQualityLevel.NumQualityLevels - 1;
 
 	CreateCommandObjects();
-	CreateSwapChain(mMSAASampleCount, mMSAAQuality, mSwapChainBufferCount, App::Win32App::GetHWND());
+	CreateSwapChain(mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
+	CreateDescriptorHeaps();
+	CreateRenderTargetViews();
+	CreateDepthStencilBufferAndView(mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 }

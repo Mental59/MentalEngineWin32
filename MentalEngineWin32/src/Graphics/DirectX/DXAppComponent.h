@@ -62,6 +62,5 @@ namespace Graphics
 
 		UINT mMSAASampleCount = 1;
 		UINT mMSAAQuality = 0;
-		UINT mSwapChainBufferCount = 2;
 	};
 }
