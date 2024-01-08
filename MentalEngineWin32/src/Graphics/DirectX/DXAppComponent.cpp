@@ -18,7 +18,9 @@ Graphics::DXAppComponent::DXAppComponent(
 	mTitle(title),
 	mMSAASampleCount(msaaSampleCount),
 	mMinWidth(minWidth),
-	mMinHeight(minHeight)
+	mMinHeight(minHeight),
+	mViewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)),
+	mScissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height))
 { }
 
 void Graphics::DXAppComponent::OnInit()

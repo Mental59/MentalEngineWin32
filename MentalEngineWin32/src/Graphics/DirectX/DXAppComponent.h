@@ -62,5 +62,8 @@ namespace Graphics
 
 		UINT mMSAASampleCount = 1;
 		UINT mMSAAQuality = 0;
+
+		CD3DX12_VIEWPORT mViewport;
+		CD3DX12_RECT mScissorRect;
 	};
 }
