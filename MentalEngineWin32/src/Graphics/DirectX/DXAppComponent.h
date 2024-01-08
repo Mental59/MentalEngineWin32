@@ -52,10 +52,6 @@ namespace Graphics
 		const WCHAR* GetTitle() const { return mTitle.c_str(); }
 
 	protected:
-		void LoadPipeline();
-
-	protected:
-		bool isInitialized = false;
 		UINT mMinWidth;
 		UINT mMinHeight;
 		std::wstring mTitle;

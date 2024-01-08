@@ -25,8 +25,21 @@ Graphics::DXAppComponent::DXAppComponent(
 
 void Graphics::DXAppComponent::OnInit()
 {
-	LoadPipeline();
-	isInitialized = true;
+	EnableDebugLayer();
+	CreateFactory();
+	CreateDevice();
+	CreateFence();
+	GetDescriptorSizes();
+
+	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevel{ mBackBufferFormat, mMSAASampleCount, D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE, 0 };
+	if (!CheckMSAASupport(&msQualityLevel)) throw GraphicsException(std::format("MSAA {}x is not supported on this platform", mMSAASampleCount));
+	mMSAAQuality = msQualityLevel.NumQualityLevels - 1;
+
+	CreateCommandObjects();
+	CreateSwapChain(mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
+	CreateDescriptorHeaps();
+	CreateRenderTargetViews();
+	CreateDepthStencilBufferAndView(mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 }
 
 void Graphics::DXAppComponent::OnDestroy()
@@ -62,23 +75,4 @@ void Graphics::DXAppComponent::Render(const Game::Timer& timer)
 
 void Graphics::DXAppComponent::Update(const Game::Timer& timer)
 {
-}
-
-void Graphics::DXAppComponent::LoadPipeline()
-{
-	EnableDebugLayer();
-	CreateFactory();
-	CreateDevice();
-	CreateFence();
-	GetDescriptorSizes();
-
-	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevel{ mBackBufferFormat, mMSAASampleCount, D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE, 0 };
-	if (!CheckMSAASupport(&msQualityLevel)) throw GraphicsException(std::format("MSAA {}x is not supported on this platform", mMSAASampleCount));
-	mMSAAQuality = msQualityLevel.NumQualityLevels - 1;
-
-	CreateCommandObjects();
-	CreateSwapChain(mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
-	CreateDescriptorHeaps();
-	CreateRenderTargetViews();
-	CreateDepthStencilBufferAndView(mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 }
