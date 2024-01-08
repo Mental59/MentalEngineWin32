@@ -226,7 +226,13 @@ LRESULT CALLBACK App::Win32App::WindowProc(HWND hWnd, UINT message, WPARAM wPara
 	case WM_KEYUP:
 	{
 		if (wParam == VK_ESCAPE) PostQuitMessage(0);
-		mDXComponent->OnKeyUp(wParam);
+		mDXComponent->OnKeyUp(static_cast<UINT8>(wParam));
+		return 0;
+	}
+
+	case WM_KEYDOWN:
+	{
+		mDXComponent->OnKeyDown(static_cast<UINT8>(wParam));
 		return 0;
 	}
 

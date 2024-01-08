@@ -52,20 +52,24 @@ void Graphics::DXAppComponent::OnResize(UINT newWidth, UINT newHeight)
 
 }
 
-void Graphics::DXAppComponent::OnMouseDown(MouseButtonType button, int x, int y)
+void Graphics::DXAppComponent::OnMouseDown(MouseButtonType button, UINT x, UINT y)
 {
 }
 
-void Graphics::DXAppComponent::OnMouseUp(MouseButtonType button, int x, int y)
+void Graphics::DXAppComponent::OnMouseUp(MouseButtonType button, UINT x, UINT y)
 {
 }
 
-void Graphics::DXAppComponent::OnMouseMove(int x, int y)
+void Graphics::DXAppComponent::OnMouseMove(UINT x, UINT y)
 {
 
 }
 
-void Graphics::DXAppComponent::OnKeyUp(WPARAM key)
+void Graphics::DXAppComponent::OnKeyUp(UINT8 key)
+{
+}
+
+void Graphics::DXAppComponent::OnKeyDown(UINT8 key)
 {
 }
 

@@ -41,10 +41,11 @@ namespace Graphics
 		virtual void OnDestroy() override;
 
 		virtual void OnResize(UINT newWidth, UINT newHeight);
-		virtual void OnMouseDown(MouseButtonType button, int x, int y);
-		virtual void OnMouseUp(MouseButtonType button, int x, int y);
-		virtual void OnMouseMove(int x, int y);
-		virtual void OnKeyUp(WPARAM key);
+		virtual void OnMouseDown(MouseButtonType button, UINT x, UINT y);
+		virtual void OnMouseUp(MouseButtonType button, UINT x, UINT y);
+		virtual void OnMouseMove(UINT x, UINT y);
+		virtual void OnKeyUp(UINT8 key);
+		virtual void OnKeyDown(UINT8 key);
 
 		virtual void Render(const Game::Timer& timer);
 		virtual void Update(const Game::Timer& timer);
