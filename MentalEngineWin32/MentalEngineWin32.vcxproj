@@ -169,7 +169,7 @@
     <ClCompile Include="src\Exceptions\GraphicsException.cpp" />
     <ClCompile Include="src\Game\Timer.cpp" />
     <ClCompile Include="src\Graphics\DirectX\DXAppComponent.cpp" />
-    <ClCompile Include="src\Graphics\DirectX\DXObject.cpp" />
+    <ClCompile Include="src\Graphics\DirectX\DXBaseComponent.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Exceptions\ComException.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
@@ -180,7 +180,7 @@
     <ClInclude Include="src\Exceptions\GraphicsException.h" />
     <ClInclude Include="src\Game\Timer.h" />
     <ClInclude Include="src\Graphics\DirectX\DXAppComponent.h" />
-    <ClInclude Include="src\Graphics\DirectX\DXObject.h" />
+    <ClInclude Include="src\Graphics\DirectX\DXBaseComponent.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Utils\d3dx12.h" />
     <ClInclude Include="src\Exceptions\ComException.h" />

@@ -8,11 +8,11 @@
 
 namespace Graphics
 {
-	class DXObject
+	class DXBaseComponent
 	{
 	public:
-		DXObject(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel);
-		virtual ~DXObject();
+		DXBaseComponent(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel);
+		virtual ~DXBaseComponent();
 
 		virtual void OnInit() = 0;
 		virtual void OnDestroy();

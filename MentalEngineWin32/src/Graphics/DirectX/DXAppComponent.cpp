@@ -14,7 +14,7 @@ Graphics::DXAppComponent::DXAppComponent(
 	UINT msaaSampleCount,
 	D3D_FEATURE_LEVEL featureLevel
 ) :
-	DXObject(width, height, featureLevel),
+	DXBaseComponent(width, height, featureLevel),
 	mTitle(title),
 	mMSAASampleCount(msaaSampleCount),
 	mMinWidth(minWidth),
@@ -29,7 +29,7 @@ void Graphics::DXAppComponent::OnInit()
 
 void Graphics::DXAppComponent::OnDestroy()
 {
-	DXObject::OnDestroy();
+	DXBaseComponent::OnDestroy();
 }
 
 void Graphics::DXAppComponent::OnResize(UINT newWidth, UINT newHeight)

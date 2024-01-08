@@ -5,12 +5,12 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <string>
-#include "DXObject.h"
+#include "DXBaseComponent.h"
 #include "Game/Timer.h"
 
 namespace Graphics
 {
-	class DXAppComponent : public DXObject
+	class DXAppComponent : public DXBaseComponent
 	{
 	public:
 		enum ResizeMode

@@ -21,7 +21,7 @@
     <ClCompile Include="src\Graphics\DirectX\DXAppComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\DirectX\DXObject.cpp">
+    <ClCompile Include="src\Graphics\DirectX\DXBaseComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\ComException.cpp">
@@ -47,7 +47,7 @@
     <ClInclude Include="src\Utils\d3dx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\DirectX\DXObject.h">
+    <ClInclude Include="src\Graphics\DirectX\DXBaseComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math\Math.h">

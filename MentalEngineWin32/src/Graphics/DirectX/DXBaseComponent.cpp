@@ -1,7 +1,7 @@
-#include "DXObject.h"
+#include "DXBaseComponent.h"
 #include "Utils/Macros.h"
 
-Graphics::DXObject::DXObject(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel) :
+Graphics::DXBaseComponent::DXBaseComponent(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel) :
 	mFeatureLevel(featureLevel),
 	mWidth(width),
 	mHeight(height),
@@ -11,26 +11,26 @@ Graphics::DXObject::DXObject(UINT width, UINT height, D3D_FEATURE_LEVEL featureL
 
 }
 
-Graphics::DXObject::~DXObject()
+Graphics::DXBaseComponent::~DXBaseComponent()
 {
 }
 
-void Graphics::DXObject::OnDestroy()
+void Graphics::DXBaseComponent::OnDestroy()
 {
 	CloseHandle(mFenceEvent);
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXObject::GetCurrentBackBufferView() const
+D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXBaseComponent::GetCurrentBackBufferView() const
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mBackBufferIndex, mRtvDescriptorSize);
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXObject::GetCurrentDepthStencilView() const
+D3D12_CPU_DESCRIPTOR_HANDLE Graphics::DXBaseComponent::GetCurrentDepthStencilView() const
 {
 	return mDSVHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
-void Graphics::DXObject::EnableDebugLayer()
+void Graphics::DXBaseComponent::EnableDebugLayer()
 {
 #if defined(_DEBUG)
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugController;
@@ -39,7 +39,7 @@ void Graphics::DXObject::EnableDebugLayer()
 #endif
 }
 
-void Graphics::DXObject::CreateFactory()
+void Graphics::DXBaseComponent::CreateFactory()
 {
 	UINT dxgiFactoryFlags = 0;
 
@@ -50,7 +50,7 @@ void Graphics::DXObject::CreateFactory()
 	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mDXGIFactory)));
 }
 
-void Graphics::DXObject::CreateDevice()
+void Graphics::DXBaseComponent::CreateDevice()
 {
 	HRESULT hardwareResult = D3D12CreateDevice(
 		nullptr, // default adapter
@@ -66,7 +66,7 @@ void Graphics::DXObject::CreateDevice()
 	}
 }
 
-void Graphics::DXObject::CreateFence()
+void Graphics::DXBaseComponent::CreateFence()
 {
 	ThrowIfFailed(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));
 	mFenceValue = 1;
@@ -79,20 +79,20 @@ void Graphics::DXObject::CreateFence()
 	}
 }
 
-void Graphics::DXObject::GetDescriptorSizes()
+void Graphics::DXBaseComponent::GetDescriptorSizes()
 {
 	mRtvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	mDsvDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 	mCbvSrvUavDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-bool Graphics::DXObject::CheckMSAASupport(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels)
+bool Graphics::DXBaseComponent::CheckMSAASupport(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels)
 {
 	ThrowIfFailed(mDevice->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, msQualityLevels, sizeof(*msQualityLevels)));
 	return msQualityLevels->NumQualityLevels > 0;
 }
 
-void Graphics::DXObject::CreateCommandObjects(bool closeCommandList)
+void Graphics::DXBaseComponent::CreateCommandObjects(bool closeCommandList)
 {
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -108,7 +108,7 @@ void Graphics::DXObject::CreateCommandObjects(bool closeCommandList)
 	}
 }
 
-void Graphics::DXObject::CreateSwapChain(
+void Graphics::DXBaseComponent::CreateSwapChain(
 	UINT msaaSampleCount,
 	UINT msaaQuality,
 	HWND outputWindow)
@@ -143,7 +143,7 @@ void Graphics::DXObject::CreateSwapChain(
 	UpdateBackBufferIndex();
 }
 
-void Graphics::DXObject::FlushCommandQueue()
+void Graphics::DXBaseComponent::FlushCommandQueue()
 {
 	// Wait for GPU to finish executing all commands
 	const UINT64 fence = mFenceValue;
@@ -157,12 +157,12 @@ void Graphics::DXObject::FlushCommandQueue()
 	}
 }
 
-void Graphics::DXObject::UpdateBackBufferIndex()
+void Graphics::DXBaseComponent::UpdateBackBufferIndex()
 {
 	mBackBufferIndex = mSwapChain->GetCurrentBackBufferIndex();
 }
 
-void Graphics::DXObject::CreateDescriptorHeaps()
+void Graphics::DXBaseComponent::CreateDescriptorHeaps()
 {
 	// Describe and create a render target view (RTV) descriptor heap
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -179,7 +179,7 @@ void Graphics::DXObject::CreateDescriptorHeaps()
 	ThrowIfFailed(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
 }
 
-void Graphics::DXObject::CreateRenderTargetViews()
+void Graphics::DXBaseComponent::CreateRenderTargetViews()
 {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
 
@@ -192,7 +192,7 @@ void Graphics::DXObject::CreateRenderTargetViews()
 	}
 }
 
-void Graphics::DXObject::CreateDepthStencilBufferAndView(
+void Graphics::DXBaseComponent::CreateDepthStencilBufferAndView(
 	UINT msaaSampleCount,
 	UINT msaaQuality,
 	D3D12_RESOURCE_STATES initialState
