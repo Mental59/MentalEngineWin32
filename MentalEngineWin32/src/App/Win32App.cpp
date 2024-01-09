@@ -111,8 +111,10 @@ LRESULT CALLBACK App::Win32App::WindowProc(HWND hWnd, UINT message, WPARAM wPara
 
 	case WM_SIZE:
 	{
-		mWindowWidth = LOWORD(lParam);
-		mWindowHeight = HIWORD(lParam);
+		RECT clientRect{};
+		GetClientRect(hWnd, &clientRect);
+		mWindowWidth = clientRect.right - clientRect.left;
+		mWindowHeight = clientRect.bottom - clientRect.top;
 
 		if (wParam == SIZE_MINIMIZED)
 		{

@@ -31,11 +31,19 @@ namespace Graphics
 
 		void GetDescriptorSizes();
 
-		bool CheckMSAASupport(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels);
+		bool CheckMSAASupport(
+			D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels
+		);
 
 		void CreateCommandObjects(bool closeCommandList = true);
 
-		void CreateSwapChain(UINT width, UINT height, UINT msaaSampleCount, UINT msaaQuality, HWND outputWindow);
+		void CreateSwapChain(
+			UINT width,
+			UINT height,
+			UINT msaaSampleCount,
+			UINT msaaQuality,
+			HWND outputWindow
+		);
 
 		void FlushCommandQueue();
 
@@ -52,6 +60,9 @@ namespace Graphics
 			UINT msaaQuality,
 			D3D12_RESOURCE_STATES initialState = D3D12_RESOURCE_STATE_DEPTH_WRITE
 		);
+
+		void ExecuteCommandLists();
+		void SwapBackBuffers(UINT syncInterval);
 
 	protected:
 		static const UINT mSwapChainBufferCount = 2;
@@ -71,6 +82,8 @@ namespace Graphics
 
 		Microsoft::WRL::ComPtr<ID3D12Resource> mRenderTargets[mSwapChainBufferCount];
 		Microsoft::WRL::ComPtr<ID3D12Resource> mDepthStencilBuffer;
+
+		Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
 
 		UINT mRtvDescriptorSize = 0;
 		UINT mDsvDescriptorSize = 0;

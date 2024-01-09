@@ -32,7 +32,8 @@ namespace Graphics
 			UINT minHeight,
 			std::wstring title,
 			UINT msaaSampleCount = 1,
-			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0);
+			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0
+		);
 
 		inline UINT GetWidth() const { return mWidth; }
 		inline UINT GetHeight() const { return mHeight; }
@@ -46,18 +47,22 @@ namespace Graphics
 		virtual void OnDestroy() override;
 
 		virtual void OnResize(UINT newWidth, UINT newHeight);
+
+		virtual void Render(const Game::Timer& timer);
+		virtual void Update(const Game::Timer& timer);
+
 		virtual void OnMouseDown(MouseButtonType button, UINT x, UINT y);
 		virtual void OnMouseUp(MouseButtonType button, UINT x, UINT y);
 		virtual void OnMouseMove(UINT x, UINT y);
 		virtual void OnKeyUp(UINT8 key);
 		virtual void OnKeyDown(UINT8 key);
 
-		virtual void Render(const Game::Timer& timer);
-		virtual void Update(const Game::Timer& timer);
-
 		const WCHAR* GetTitle() const { return mTitle.c_str(); }
 
 	protected:
+		void UpdateWindowSizeDependantFields(UINT newWidth, UINT newHeight);
+		void PopulateCommandList();
+
 		UINT mWidth;
 		UINT mHeight;
 		D3D_FEATURE_LEVEL mFeatureLevel;

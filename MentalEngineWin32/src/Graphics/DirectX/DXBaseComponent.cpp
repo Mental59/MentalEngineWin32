@@ -236,3 +236,14 @@ void Graphics::DXBaseComponent::CreateDepthStencilBufferAndView(
 	dsvDesc.Texture2D.MipSlice = 0;
 	mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), &dsvDesc, GetCurrentDepthStencilView());
 }
+
+void Graphics::DXBaseComponent::ExecuteCommandLists()
+{
+	ID3D12CommandList* ppCommandLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+}
+
+void Graphics::DXBaseComponent::SwapBackBuffers(UINT syncInterval)
+{
+	ThrowIfFailed(mSwapChain->Present(syncInterval, 0));
+}
