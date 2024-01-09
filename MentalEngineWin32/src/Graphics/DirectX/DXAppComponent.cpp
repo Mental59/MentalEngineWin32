@@ -70,11 +70,10 @@ void Graphics::DXAppComponent::OnResize(UINT newWidth, UINT newHeight)
 
 void Graphics::DXAppComponent::Render(const Game::Timer& timer)
 {
-	PopulateCommandList();
-	ExecuteCommandLists();
-	SwapBackBuffers(0);
-	FlushCommandQueue();
-	UpdateBackBufferIndex();
+	PopulateCommandList(); // record commands for the GPU
+	ExecuteCommandLists(); // execute recorded commands
+	SwapBackAndFrontBuffers(); // present current frame and swap back and front buffers
+	FlushCommandQueue(); // wait for commands to finish executing (NOT A GOOD PRACTICE)
 }
 
 void Graphics::DXAppComponent::Update(const Game::Timer& timer)

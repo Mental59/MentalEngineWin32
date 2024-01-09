@@ -243,7 +243,8 @@ void Graphics::DXBaseComponent::ExecuteCommandLists()
 	mCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 }
 
-void Graphics::DXBaseComponent::SwapBackBuffers(UINT syncInterval)
+void Graphics::DXBaseComponent::SwapBackAndFrontBuffers(UINT syncInterval)
 {
 	ThrowIfFailed(mSwapChain->Present(syncInterval, 0));
+	UpdateBackBufferIndex();
 }

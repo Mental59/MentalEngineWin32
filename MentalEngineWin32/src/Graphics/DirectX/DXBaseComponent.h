@@ -62,7 +62,7 @@ namespace Graphics
 		);
 
 		void ExecuteCommandLists();
-		void SwapBackBuffers(UINT syncInterval);
+		void SwapBackAndFrontBuffers(UINT syncInterval = 0);
 
 	protected:
 		static const UINT mSwapChainBufferCount = 2;
