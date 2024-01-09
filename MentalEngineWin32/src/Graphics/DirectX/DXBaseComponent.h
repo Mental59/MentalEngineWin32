@@ -11,15 +11,11 @@ namespace Graphics
 	class DXBaseComponent
 	{
 	public:
-		DXBaseComponent(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel);
+		DXBaseComponent();
 		virtual ~DXBaseComponent();
 
-		virtual void OnInit() = 0;
+		virtual void OnInit();
 		virtual void OnDestroy();
-
-		inline UINT GetWidth() const { return mWidth; }
-		inline UINT GetHeight() const { return mHeight; }
-		inline float GetAspectRatio() const { return static_cast<float>(mWidth) / static_cast<float>(mHeight); }
 
 		D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView() const;
 		D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
@@ -27,24 +23,20 @@ namespace Graphics
 	protected:
 		void EnableDebugLayer();
 		void CreateFactory();
-		void CreateDevice();
+		void CreateDevice(D3D_FEATURE_LEVEL featureLevel);
 		void CreateFence();
 		void GetDescriptorSizes();
 		bool CheckMSAASupport(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels);
 		void CreateCommandObjects(bool closeCommandList = true);
-		void CreateSwapChain(UINT msaaSampleCount, UINT msaaQuality, HWND outputWindow);
+		void CreateSwapChain(UINT width, UINT height, UINT msaaSampleCount, UINT msaaQuality, HWND outputWindow);
 		void FlushCommandQueue();
 		void UpdateBackBufferIndex();
 		void CreateDescriptorHeaps();
 		void CreateRenderTargetViews();
-		void CreateDepthStencilBufferAndView(UINT msaaSampleCount, UINT msaaQuality, D3D12_RESOURCE_STATES initialState);
+		void CreateDepthStencilBufferAndView(UINT width, UINT height, UINT msaaSampleCount, UINT msaaQuality, D3D12_RESOURCE_STATES initialState);
 
 	protected:
 		static const UINT mSwapChainBufferCount = 2;
-
-		UINT mWidth;
-		UINT mHeight;
-		D3D_FEATURE_LEVEL mFeatureLevel;
 
 		Microsoft::WRL::ComPtr<IDXGIFactory7> mDXGIFactory;
 		Microsoft::WRL::ComPtr<ID3D12Device> mDevice;

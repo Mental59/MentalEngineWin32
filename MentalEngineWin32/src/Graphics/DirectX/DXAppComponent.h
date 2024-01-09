@@ -34,8 +34,13 @@ namespace Graphics
 			UINT msaaSampleCount = 1,
 			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0);
 
+		inline UINT GetWidth() const { return mWidth; }
+		inline UINT GetHeight() const { return mHeight; }
+
 		inline UINT GetMinWidth() const { return mMinWidth; }
 		inline UINT GetMinHeight() const { return mMinHeight; }
+
+		inline float GetAspectRatio() const { return static_cast<float>(mWidth) / static_cast<float>(mHeight); }
 
 		virtual void OnInit() override;
 		virtual void OnDestroy() override;
@@ -53,6 +58,10 @@ namespace Graphics
 		const WCHAR* GetTitle() const { return mTitle.c_str(); }
 
 	protected:
+		UINT mWidth;
+		UINT mHeight;
+		D3D_FEATURE_LEVEL mFeatureLevel;
+
 		UINT mMinWidth;
 		UINT mMinHeight;
 		std::wstring mTitle;

@@ -14,7 +14,10 @@ Graphics::DXAppComponent::DXAppComponent(
 	UINT msaaSampleCount,
 	D3D_FEATURE_LEVEL featureLevel
 ) :
-	DXBaseComponent(width, height, featureLevel),
+	DXBaseComponent(),
+	mWidth(width),
+	mHeight(height),
+	mFeatureLevel(featureLevel),
 	mTitle(title),
 	mMSAASampleCount(msaaSampleCount),
 	mMinWidth(minWidth),
@@ -27,7 +30,7 @@ void Graphics::DXAppComponent::OnInit()
 {
 	EnableDebugLayer();
 	CreateFactory();
-	CreateDevice();
+	CreateDevice(mFeatureLevel);
 	CreateFence();
 	GetDescriptorSizes();
 
@@ -36,10 +39,10 @@ void Graphics::DXAppComponent::OnInit()
 	mMSAAQuality = msQualityLevel.NumQualityLevels - 1;
 
 	CreateCommandObjects();
-	CreateSwapChain(mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
+	CreateSwapChain(mWidth, mHeight, mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
 	CreateDescriptorHeaps();
 	CreateRenderTargetViews();
-	CreateDepthStencilBufferAndView(mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	CreateDepthStencilBufferAndView(mWidth, mHeight, mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 }
 
 void Graphics::DXAppComponent::OnDestroy()

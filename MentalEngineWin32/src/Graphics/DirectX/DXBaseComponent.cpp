@@ -1,10 +1,7 @@
 #include "DXBaseComponent.h"
 #include "Utils/Macros.h"
 
-Graphics::DXBaseComponent::DXBaseComponent(UINT width, UINT height, D3D_FEATURE_LEVEL featureLevel) :
-	mFeatureLevel(featureLevel),
-	mWidth(width),
-	mHeight(height),
+Graphics::DXBaseComponent::DXBaseComponent() :
 	mFenceEvent(nullptr),
 	mFenceValue(0)
 {
@@ -13,6 +10,11 @@ Graphics::DXBaseComponent::DXBaseComponent(UINT width, UINT height, D3D_FEATURE_
 
 Graphics::DXBaseComponent::~DXBaseComponent()
 {
+}
+
+void Graphics::DXBaseComponent::OnInit()
+{
+
 }
 
 void Graphics::DXBaseComponent::OnDestroy()
@@ -50,11 +52,11 @@ void Graphics::DXBaseComponent::CreateFactory()
 	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mDXGIFactory)));
 }
 
-void Graphics::DXBaseComponent::CreateDevice()
+void Graphics::DXBaseComponent::CreateDevice(D3D_FEATURE_LEVEL featureLevel)
 {
 	HRESULT hardwareResult = D3D12CreateDevice(
 		nullptr, // default adapter
-		mFeatureLevel,
+		featureLevel,
 		IID_PPV_ARGS(&mDevice));
 
 	// Fallback to WARP device.
@@ -62,7 +64,7 @@ void Graphics::DXBaseComponent::CreateDevice()
 	{
 		Microsoft::WRL::ComPtr<IDXGIAdapter> pWarpAdapter;
 		ThrowIfFailed(mDXGIFactory->EnumWarpAdapter(IID_PPV_ARGS(&pWarpAdapter)));
-		ThrowIfFailed(D3D12CreateDevice(pWarpAdapter.Get(), mFeatureLevel, IID_PPV_ARGS(&mDevice)));
+		ThrowIfFailed(D3D12CreateDevice(pWarpAdapter.Get(), featureLevel, IID_PPV_ARGS(&mDevice)));
 	}
 }
 
@@ -109,6 +111,8 @@ void Graphics::DXBaseComponent::CreateCommandObjects(bool closeCommandList)
 }
 
 void Graphics::DXBaseComponent::CreateSwapChain(
+	UINT width,
+	UINT height,
 	UINT msaaSampleCount,
 	UINT msaaQuality,
 	HWND outputWindow)
@@ -118,8 +122,8 @@ void Graphics::DXBaseComponent::CreateSwapChain(
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain;
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	swapChainDesc.Width = mWidth;
-	swapChainDesc.Height = mHeight;
+	swapChainDesc.Width = width;
+	swapChainDesc.Height = height;
 	swapChainDesc.Format = mBackBufferFormat;
 	swapChainDesc.SampleDesc.Count = msaaSampleCount;
 	swapChainDesc.SampleDesc.Quality = msaaQuality;
@@ -193,6 +197,8 @@ void Graphics::DXBaseComponent::CreateRenderTargetViews()
 }
 
 void Graphics::DXBaseComponent::CreateDepthStencilBufferAndView(
+	UINT width,
+	UINT height,
 	UINT msaaSampleCount,
 	UINT msaaQuality,
 	D3D12_RESOURCE_STATES initialState
@@ -201,8 +207,8 @@ void Graphics::DXBaseComponent::CreateDepthStencilBufferAndView(
 	D3D12_RESOURCE_DESC depthStencilDesc;
 	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	depthStencilDesc.Alignment = 0;
-	depthStencilDesc.Width = mWidth;
-	depthStencilDesc.Height = mHeight;
+	depthStencilDesc.Width = width;
+	depthStencilDesc.Height = height;
 	depthStencilDesc.DepthOrArraySize = 1;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.Format = mDepthStencilFormat;
