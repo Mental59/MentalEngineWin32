@@ -28,6 +28,8 @@ Graphics::DXAppComponent::DXAppComponent(
 
 void Graphics::DXAppComponent::OnInit()
 {
+	DXBaseComponent::OnInit();
+
 	EnableDebugLayer();
 	CreateFactory();
 	CreateDevice(mFeatureLevel);
