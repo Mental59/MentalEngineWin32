@@ -22,18 +22,36 @@ namespace Graphics
 
 	protected:
 		void EnableDebugLayer();
+
 		void CreateFactory();
+
 		void CreateDevice(D3D_FEATURE_LEVEL featureLevel);
+
 		void CreateFence();
+
 		void GetDescriptorSizes();
+
 		bool CheckMSAASupport(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS* msQualityLevels);
+
 		void CreateCommandObjects(bool closeCommandList = true);
+
 		void CreateSwapChain(UINT width, UINT height, UINT msaaSampleCount, UINT msaaQuality, HWND outputWindow);
+
 		void FlushCommandQueue();
+
 		void UpdateBackBufferIndex();
+
 		void CreateDescriptorHeaps();
+
 		void CreateRenderTargetViews();
-		void CreateDepthStencilBufferAndView(UINT width, UINT height, UINT msaaSampleCount, UINT msaaQuality, D3D12_RESOURCE_STATES initialState);
+
+		void CreateDepthStencilBufferAndView(
+			UINT width,
+			UINT height,
+			UINT msaaSampleCount,
+			UINT msaaQuality,
+			D3D12_RESOURCE_STATES initialState = D3D12_RESOURCE_STATE_DEPTH_WRITE
+		);
 
 	protected:
 		static const UINT mSwapChainBufferCount = 2;

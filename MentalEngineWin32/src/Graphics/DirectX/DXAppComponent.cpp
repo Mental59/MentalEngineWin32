@@ -42,7 +42,7 @@ void Graphics::DXAppComponent::OnInit()
 	CreateSwapChain(mWidth, mHeight, mMSAASampleCount, mMSAAQuality, App::Win32App::GetHWND());
 	CreateDescriptorHeaps();
 	CreateRenderTargetViews();
-	CreateDepthStencilBufferAndView(mWidth, mHeight, mMSAASampleCount, mMSAAQuality, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	CreateDepthStencilBufferAndView(mWidth, mHeight, mMSAASampleCount, mMSAAQuality);
 }
 
 void Graphics::DXAppComponent::OnDestroy()
