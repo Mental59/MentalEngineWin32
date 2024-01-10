@@ -117,8 +117,6 @@ void Graphics::DXBaseComponent::CreateSwapChain(
 	UINT msaaQuality,
 	HWND outputWindow)
 {
-	mSwapChain.Reset();
-
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain;
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
