@@ -62,7 +62,12 @@ namespace Graphics
 		);
 
 		void ExecuteCommandLists();
+
 		void SwapBackAndFrontBuffers(UINT syncInterval = 0);
+
+		void ResetBuffers();
+
+		void ResizeSwapChainBuffers(UINT newWidth, UINT newHeight);
 
 	protected:
 		static const UINT mSwapChainBufferCount = 2;
@@ -80,7 +85,7 @@ namespace Graphics
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mRTVHeap;
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mDSVHeap;
 
-		Microsoft::WRL::ComPtr<ID3D12Resource> mRenderTargets[mSwapChainBufferCount];
+		Microsoft::WRL::ComPtr<ID3D12Resource> mSwapChainBuffers[mSwapChainBufferCount];
 		Microsoft::WRL::ComPtr<ID3D12Resource> mDepthStencilBuffer;
 
 		Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;

@@ -190,8 +190,8 @@ void Graphics::DXBaseComponent::CreateRenderTargetViews()
 	// Create a RTV for each back buffer
 	for (UINT i = 0; i < mSwapChainBufferCount; i++)
 	{
-		ThrowIfFailed(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));
-		mDevice->CreateRenderTargetView(mRenderTargets[i].Get(), nullptr, rtvHandle);
+		ThrowIfFailed(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mSwapChainBuffers[i])));
+		mDevice->CreateRenderTargetView(mSwapChainBuffers[i].Get(), nullptr, rtvHandle);
 		rtvHandle.Offset(1, mRtvDescriptorSize);
 	}
 }
@@ -211,7 +211,7 @@ void Graphics::DXBaseComponent::CreateDepthStencilBufferAndView(
 		height,
 		1,
 		1,
-		mDepthStencilFormat,
+		DXGI_FORMAT_R24G8_TYPELESS,
 		msaaSampleCount,
 		msaaQuality,
 		D3D12_TEXTURE_LAYOUT_UNKNOWN,
@@ -247,4 +247,20 @@ void Graphics::DXBaseComponent::SwapBackAndFrontBuffers(UINT syncInterval)
 {
 	ThrowIfFailed(mSwapChain->Present(syncInterval, 0));
 	UpdateBackBufferIndex();
+}
+
+void Graphics::DXBaseComponent::ResetBuffers()
+{
+	for (UINT i = 0; i < mSwapChainBufferCount; i++)
+	{
+		mSwapChainBuffers[i].Reset();
+	}
+	mDepthStencilBuffer.Reset();
+}
+
+void Graphics::DXBaseComponent::ResizeSwapChainBuffers(UINT newWidth, UINT newHeight)
+{
+	DXGI_SWAP_CHAIN_DESC1 desc{};
+	mSwapChain->GetDesc1(&desc);
+	ThrowIfFailed(mSwapChain->ResizeBuffers(mSwapChainBufferCount, newWidth, newHeight, desc.Format, desc.Flags));
 }

@@ -65,6 +65,14 @@ void Graphics::DXAppComponent::OnResize(UINT newWidth, UINT newHeight)
 	OutputDebugString(std::format(L"New resolution: width={}, height={}\n", newWidth, newHeight).c_str());
 #endif
 
+	FlushCommandQueue();
+
+	ResetBuffers();
+	ResizeSwapChainBuffers(newWidth, newHeight);
+	UpdateBackBufferIndex();
+	CreateRenderTargetViews();
+	CreateDepthStencilBufferAndView(newWidth, newHeight, mMSAASampleCount, mMSAAQuality);
+
 	UpdateWindowSizeDependantFields(newWidth, newHeight);
 }
 
@@ -118,7 +126,7 @@ void Graphics::DXAppComponent::PopulateCommandList()
 
 	// Indicate that the back buffer will be used as a render target.
 	CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
-		mRenderTargets[mBackBufferIndex].Get(),
+		mSwapChainBuffers[mBackBufferIndex].Get(),
 		D3D12_RESOURCE_STATE_PRESENT,
 		D3D12_RESOURCE_STATE_RENDER_TARGET
 	);
@@ -137,7 +145,7 @@ void Graphics::DXAppComponent::PopulateCommandList()
 
 	// Indicate that the back buffer will now be used to present.
 	transition = CD3DX12_RESOURCE_BARRIER::Transition(
-		mRenderTargets[mBackBufferIndex].Get(),
+		mSwapChainBuffers[mBackBufferIndex].Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PRESENT
 	);
